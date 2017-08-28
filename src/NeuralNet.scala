@@ -18,6 +18,7 @@ class NeuralNet (n_inputs :Int, n_hidden :Int, n_outputs :Int){
     _network.append(inputlayer)
     _network.append(hiddenlayer)
     _network.append(outputlayer)
+
     print(_network.toString)
   }
 
