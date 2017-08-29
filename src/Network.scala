@@ -1,38 +1,55 @@
+import scala.Array.emptyDoubleArray
 import scala.collection.mutable.ArrayBuffer
 
 object Network{
 
-  var _layers: ArrayBuffer[Array[Double]] = ArrayBuffer.empty[Array[Double]]
+  var _layers: ArrayBuffer[Array[Neuron]] = ArrayBuffer.empty[Array[Neuron]]
 
-  def append(layer :Array[Double]): Unit = {
-    _layers += layer
-  }
-
-  def activate(weights: Array[Double], inputs: Array[Double]): Unit = {
-
-    var activation = weights.last
-    for(i <- 0 until weights.length-1)
-      activation += weights(i) * inputs(i)
-    activation
-  }
+  def append(layer :Array[Neuron]){_layers += layer}
 
   override def toString: String = {
 
-    val builder     :StringBuilder        = new StringBuilder
-    val layerarray  :Array[Array[Double]] = _layers.toArray
+    val builder :StringBuilder = new StringBuilder
 
-    builder
-      .append("'Weights'")
-      .append("\n")
-
-    for(i <- layerarray.indices) {
-      builder.append("[ ")
-      for (j <- layerarray(i).indices)
+    for(layer <- _layers.indices){
+      for(neuron <- _layers(layer).indices){
         builder
-          .append(layerarray(i)(j))
-          .append(" ")
-      builder
-        .append("]\n")
+          .append("[")
+          .append(_layers(layer)(neuron).toString)
+          .append("]")
+        if(neuron < _layers(layer).length-1)
+          builder.append(", ")
+      }
+      builder.append("\n")
+    }
+    builder.toString()
+  }
+}
+
+class Neuron(_weights : Array[Double]){
+
+  var _output             :Double = 0.0d
+  var _outputDerivative :Double = 0.0d
+
+  def activate(inputs: Array[Double]): Double = {
+    var activation = _weights.last
+    for(i <- 0 until _weights.length-1)
+      activation += _weights(i) * inputs(i)
+    transfer(activation)
+    _output
+  }
+
+  private def transfer(activation :Double): Unit = {
+    _output           = 1.0 / (1.0 + Math.exp(-activation))
+    _outputDerivative = _output * (1 - _output)
+  }
+
+  override def toString: String = {
+    val builder :StringBuilder = new StringBuilder
+    for(idx <- _weights.indices) {
+      builder.append(_weights(idx))
+      if(idx < _weights.length-1)
+        builder.append(", ")
     }
     builder.toString()
   }

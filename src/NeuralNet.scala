@@ -1,3 +1,4 @@
+import scala.collection.mutable.ArrayBuffer
 import scala.util.Random
 
 class NeuralNet (n_inputs :Int, n_hidden :Int, n_outputs :Int){
@@ -11,17 +12,33 @@ class NeuralNet (n_inputs :Int, n_hidden :Int, n_outputs :Int){
 
   private def initializeNetwork(): Unit ={
 
-    var inputlayer = Array.fill(n_inputs+1)(Random.nextDouble())
-    var hiddenlayer = Array.fill(n_hidden+1)(Random.nextDouble())
-    var outputlayer = Array.fill(n_outputs)(Random.nextDouble())
+    var hiddenLayer :ArrayBuffer[Neuron] = new ArrayBuffer[Neuron]()
+    var outputLayer :ArrayBuffer[Neuron] = new ArrayBuffer[Neuron]()
 
-    _network.append(inputlayer)
-    _network.append(hiddenlayer)
-    _network.append(outputlayer)
-
-    print(_network.toString)
+    for(hidden <- 0 until _numHiddens){
+      var neuronWeights = Array.fill(_numInputs + 1)(Random.nextDouble())
+      hiddenLayer += new Neuron(neuronWeights)
+    }
+    for(outputs <- 0 until _numOutputs) {
+      var neuronWeights = Array.fill(_numHiddens + 1)(Random.nextDouble())
+      outputLayer += new Neuron(neuronWeights)
+    }
+    _network.append(hiddenLayer.toArray)
+    _network.append(outputLayer.toArray)
   }
 
+  def forwardPropagate(inputs :Array[Double]): Array[Double] ={
 
+    var layerInputs = inputs
+    var layerOutputs :ArrayBuffer[Double] = new ArrayBuffer[Double]()
+
+    _network._layers.foreach(
+      layer => {layer.foreach(
+        neuron => {layerOutputs += neuron.activate(layerInputs)})
+        layerInputs = layerOutputs.toArray
+        layerOutputs.clear()
+      })
+    layerInputs
+  }
 }
 
