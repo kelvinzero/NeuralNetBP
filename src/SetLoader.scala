@@ -19,4 +19,26 @@ object SetLoader{
     }
     dataSet.toList
   }
+
+  def normalizeMinMax(min :Int, max :Int, inputs: Int, dataSet :List[Array[Double]]): Unit = {
+
+    var minMaxArray = new Array[Array[Double]](inputs)
+
+    for(mmIdx <- minMaxArray.indices)
+      minMaxArray(mmIdx) = Array(Double.MaxValue, Double.MinValue)
+
+    for(row <- dataSet){
+      for(colIdx <- 0 until inputs){
+        if(row(colIdx) < minMaxArray(colIdx)(0))
+          minMaxArray(colIdx)(0) = row(colIdx)
+        if(row(colIdx) > minMaxArray(colIdx)(1))
+          minMaxArray(colIdx)(1) = row(colIdx)
+      }
+    }
+    for(row <- dataSet){
+      for(colIdx <- 0 until inputs){
+        row(colIdx) = (row(colIdx) - minMaxArray(colIdx)(0))/(minMaxArray(colIdx)(1) - minMaxArray(colIdx)(0))
+      }
+    }
+  }
 }

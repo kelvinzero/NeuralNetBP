@@ -123,10 +123,10 @@ class NeuralNet (n_inputs :Int, n_hidden :Int, n_outputs :Int){
 
       for(record <- trainingSet){
 
-        var outputs = forwardPropagate(record)
-        var expected = Array.fill[Double](n_outputs)(0)
-
+        var outputs   = forwardPropagate(record)
+        var expected  = Array.fill[Double](n_outputs)(0)
         expected(record.last.toInt) = 1
+
         for(idx <- expected.indices)
           error += math.pow(expected(idx)-outputs(idx), 2)
 

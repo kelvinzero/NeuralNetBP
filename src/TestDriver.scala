@@ -2,15 +2,23 @@ object TestDriver{
 
   def main(args: Array[String]): Unit = {
 
-    var loader = SetLoader
-    val set :List[Array[Double]] = loader.loadSet("./adder.txt")
-    val n_inputs = set.head.length-1
-    var net = new NeuralNet(n_inputs, 2, 2)
-    net.trainNetwork(set, 0.50, 50)
+    val loader    : SetLoader.type       = SetLoader
+    val dataSet   : List[Array[Double]]  = loader.loadSet("./seeds_dataset.txt")
+    val n_inputs  : Int                  = dataSet.head.length-1
+    val n_hiddens : Int                  = 3
+    val n_outputs : Int                  = 4
+    var error     : Double               = 0.0d
+    val neuralNet : NeuralNet            = new NeuralNet(n_inputs, n_hiddens, n_outputs)
 
-    for(row <- set){
-      val prediction = net.predict(row)
-      printf("Expected: %f, Actual: %d\n", row.last, prediction)
+    loader.normalizeMinMax(0, 1, 7, dataSet)
+    neuralNet.trainNetwork(dataSet, 0.03, 460)
+
+    for(row <- dataSet){
+      val prediction = neuralNet.predict(row)
+      if(prediction - row.last != 0)
+        error += 1
     }
+    error /= dataSet.length
+    printf("Error: %f%%\n", error*100)
   }
 }
