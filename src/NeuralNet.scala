@@ -46,7 +46,7 @@ class NeuralNet (n_inputs :Int, n_hidden :Int, n_outputs :Int){
     var layerInputs = inputs
     var layerOutputs :ArrayBuffer[Double] = new ArrayBuffer[Double]()
 
-    _network._layers.foreach( // for each layer in the network
+    _network.getLayers.foreach( // for each layer in the network
       layer => {layer.foreach( // foreach neuron in the layer
         neuron => {layerOutputs += neuron.activate(layerInputs)}) // calculate the neuron outputs (activate)
         layerInputs = layerOutputs.toArray // this layer outputs become next layer's input
@@ -61,18 +61,18 @@ class NeuralNet (n_inputs :Int, n_hidden :Int, n_outputs :Int){
     */
   def backPropagate(expected: Array[Double]): Unit = {
 
-    for(layerIdx <- _network._layers.indices.reverse){  // for each layer in the network
-      for(neuronIdx <- _network._layers(layerIdx).indices){  // for each neuron in the layer
+    for(layerIdx <- _network.getLayers.indices.reverse){  // for each layer in the network
+      for(neuronIdx <- _network.getLayers(layerIdx).indices){  // for each neuron in the layer
 
-        val thisNeuron = _network._layers(layerIdx)(neuronIdx)  // this neuron in the layer
+        val thisNeuron = _network.getLayers(layerIdx)(neuronIdx)  // this neuron in the layer
         var error :Double = 0.0d
 
-        if(layerIdx == _network._layers.length-1)  // if this is the output layer
+        if(layerIdx == _network.getLayers.length-1)  // if this is the output layer
          thisNeuron._deltaError = (expected(neuronIdx) - thisNeuron._output) * thisNeuron._transferDerivative
 
         else{  // else if this is a hidden layer
 
-          for(nextLevelNeuron <- _network._layers(layerIdx+1)) // calculate neuron error using next layer nodes error delta
+          for(nextLevelNeuron <- _network.getLayers(layerIdx+1)) // calculate neuron error using next layer nodes error delta
             error += (nextLevelNeuron._weights(neuronIdx) * nextLevelNeuron._deltaError)
           thisNeuron._deltaError = error * thisNeuron._transferDerivative
         }
@@ -92,20 +92,20 @@ class NeuralNet (n_inputs :Int, n_hidden :Int, n_outputs :Int){
     for(i <- 0 until _numInputs)
       layerInputs(i) = record(i)
 
-    for(layerIdx <- _network._layers.indices){ // for each layer
-      for(neuronIdx <- _network._layers(layerIdx).indices){  // for each neuron in the layer
+    for(layerIdx <- _network.getLayers.indices){ // for each layer
+      for(neuronIdx <- _network.getLayers(layerIdx).indices){  // for each neuron in the layer
 
-        var thisNeuron =  _network._layers(layerIdx)(neuronIdx)
+        var thisNeuron =  _network.getLayers(layerIdx)(neuronIdx)
 
         for(input <- layerInputs.indices) // adjust the weights using prior level inputs
           thisNeuron._weights(input) += learnRate * thisNeuron._deltaError * layerInputs(input)
 
         thisNeuron._weights(thisNeuron._weights.length-1) += learnRate * thisNeuron._deltaError
       }
-      layerInputs = new Array[Double](_network._layers(layerIdx).length)
+      layerInputs = new Array[Double](_network.getLayers(layerIdx).length)
 
-      for(neuronIdx <- _network._layers(layerIdx).indices)
-        layerInputs(neuronIdx) = _network._layers(layerIdx)(neuronIdx)._output
+      for(neuronIdx <- _network.getLayers(layerIdx).indices)
+        layerInputs(neuronIdx) = _network.getLayers(layerIdx)(neuronIdx)._output
     }
   }
 
@@ -133,8 +133,17 @@ class NeuralNet (n_inputs :Int, n_hidden :Int, n_outputs :Int){
         backPropagate(expected)
         updateWeights(record, learningRate)
       }
-      printf(">epoch: %d, learnRate: %f, error: %f\n", epoch+1, learningRate, error)
     }
+  }
+
+  /**
+    * Forward propagate and return the prediction
+    * @param record - The record to predict from
+    * @return - The prediction
+    */
+  def predict(record: Array[Double]): Int = {
+    val output = forwardPropagate(record)
+    output.indexOf(output.max)
   }
 }
 
