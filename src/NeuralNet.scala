@@ -1,6 +1,15 @@
 import scala.collection.mutable.ArrayBuffer
 import scala.util.Random
 
+/**
+  * A forward/back propagation neural network
+  *
+  * @author Joshua Cotes
+  *
+  * @param n_inputs - Number of inputs from set
+  * @param n_hidden - Number of hidden neurons
+  * @param n_outputs - Number of outputs
+  */
 class NeuralNet (n_inputs :Int, n_hidden :Int, n_outputs :Int){
 
   val _numInputs  :Int          = n_inputs
@@ -11,21 +20,18 @@ class NeuralNet (n_inputs :Int, n_hidden :Int, n_outputs :Int){
   initializeNetwork()
 
   /**
-    * Set random weight values for all hidden and output neurons in the network
+    * Set random weight values for hidden and output neurons in the network
     */
   private def initializeNetwork(): Unit ={
 
     var hiddenLayer :ArrayBuffer[Neuron] = new ArrayBuffer[Neuron]()
     var outputLayer :ArrayBuffer[Neuron] = new ArrayBuffer[Neuron]()
 
-    for(hidden <- 0 until _numHiddens){
-      var neuronWeights = Array.fill(_numInputs + 1)(Random.nextDouble())
-      hiddenLayer += new Neuron(neuronWeights)
-    }
-    for(outputs <- 0 until _numOutputs) {
-      var neuronWeights = Array.fill(_numHiddens + 1)(Random.nextDouble())
-      outputLayer += new Neuron(neuronWeights)
-    }
+    for(hidden <- 0 until _numHiddens)
+      hiddenLayer += new Neuron(Array.fill(_numInputs + 1)(Random.nextDouble()))
+    for(outputs <- 0 until _numOutputs)
+      outputLayer += new Neuron(Array.fill(_numHiddens + 1)(Random.nextDouble()))
+
     _network.append(hiddenLayer.toArray)
     _network.append(outputLayer.toArray)
   }
@@ -55,8 +61,6 @@ class NeuralNet (n_inputs :Int, n_hidden :Int, n_outputs :Int){
     */
   def backPropagate(expected: Array[Double]): Unit = {
 
-    //// for each neuron in every layer, calculate the error delta using the previous layer's error delta ////
-
     for(layerIdx <- _network._layers.indices.reverse){  // for each layer in the network
       for(neuronIdx <- _network._layers(layerIdx).indices){  // for each neuron in the layer
 
@@ -67,6 +71,7 @@ class NeuralNet (n_inputs :Int, n_hidden :Int, n_outputs :Int){
          thisNeuron._deltaError = (expected(neuronIdx) - thisNeuron._output) * thisNeuron._transferDerivative
 
         else{  // else if this is a hidden layer
+
           for(nextLevelNeuron <- _network._layers(layerIdx+1)) // calculate neuron error using next layer nodes error delta
             error += (nextLevelNeuron._weights(neuronIdx) * nextLevelNeuron._deltaError)
           thisNeuron._deltaError = error * thisNeuron._transferDerivative
@@ -83,6 +88,7 @@ class NeuralNet (n_inputs :Int, n_hidden :Int, n_outputs :Int){
   def updateWeights(record :Array[Double], learnRate :Double): Unit ={
 
     var layerInputs :Array[Double] = new Array[Double](_numInputs)
+
     for(i <- 0 until _numInputs)
       layerInputs(i) = record(i)
 
@@ -93,28 +99,42 @@ class NeuralNet (n_inputs :Int, n_hidden :Int, n_outputs :Int){
 
         for(input <- layerInputs.indices) // adjust the weights using prior level inputs
           thisNeuron._weights(input) += learnRate * thisNeuron._deltaError * layerInputs(input)
+
         thisNeuron._weights(thisNeuron._weights.length-1) += learnRate * thisNeuron._deltaError
       }
-
       layerInputs = new Array[Double](_network._layers(layerIdx).length)
+
       for(neuronIdx <- _network._layers(layerIdx).indices)
         layerInputs(neuronIdx) = _network._layers(layerIdx)(neuronIdx)._output
     }
   }
 
-  //TODO: Finish train network
+  /**
+    * Train the network using training set
+    * @param trainingSet - The training set with known class values
+    * @param learningRate - Learning rate
+    * @param numEpochs - Number of epochs (training cycles)
+    */
   def trainNetwork(trainingSet :List[Array[Double]], learningRate :Double, numEpochs :Int): Unit ={
+
     for(epoch <- 0 until numEpochs){
+
       var error = 0.0d
+
       for(record <- trainingSet){
 
         var outputs = forwardPropagate(record)
-        var expected = Array.fill[Int](0)(n_outputs)
+        var expected = Array.fill[Double](n_outputs)(0)
+
         expected(record.last.toInt) = 1
+        for(idx <- expected.indices)
+          error += math.pow(expected(idx)-outputs(idx), 2)
+
+        backPropagate(expected)
+        updateWeights(record, learningRate)
       }
+      printf(">epoch: %d, learnRate: %f, error: %f\n", epoch+1, learningRate, error)
     }
-
   }
-
 }
 

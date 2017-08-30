@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3d6f9c12-4bc2-4898-ab41-8830eca3176e" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/NeuralNetBP/NeuralNet.class" afterPath="$PROJECT_DIR$/out/production/NeuralNetBP/NeuralNet.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/NeuralNetBP/TestDriver$.class" afterPath="$PROJECT_DIR$/out/production/NeuralNetBP/TestDriver$.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/adder.txt" afterPath="$PROJECT_DIR$/adder.txt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/NeuralNet.scala" afterPath="$PROJECT_DIR$/src/NeuralNet.scala" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/TestDriver.scala" afterPath="$PROJECT_DIR$/src/TestDriver.scala" />
     </list>
@@ -24,8 +25,8 @@
       <file leaf-file-name="NeuralNet.scala" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/NeuralNet.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="580">
-              <caret line="111" column="41" lean-forward="false" selection-start-line="111" selection-start-column="41" selection-end-line="111" selection-end-column="41" />
+            <state relative-caret-position="-2081">
+              <caret line="6" column="24" lean-forward="true" selection-start-line="6" selection-start-column="24" selection-end-line="6" selection-end-column="24" />
               <folding>
                 <element signature="e#0#43#0" expanded="true" />
               </folding>
@@ -36,8 +37,8 @@
       <file leaf-file-name="Network.scala" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Network.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="60">
-              <caret line="53" column="0" lean-forward="true" selection-start-line="53" selection-start-column="0" selection-end-line="53" selection-end-column="0" />
+            <state relative-caret-position="525">
+              <caret line="27" column="24" lean-forward="false" selection-start-line="27" selection-start-column="24" selection-end-line="27" selection-end-column="24" />
               <folding>
                 <element signature="e#0#35#0" expanded="true" />
               </folding>
@@ -58,8 +59,8 @@
       <file leaf-file-name="TestDriver.scala" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/TestDriver.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="525">
-              <caret line="25" column="13" lean-forward="true" selection-start-line="25" selection-start-column="13" selection-end-line="25" selection-end-column="13" />
+            <state relative-caret-position="336">
+              <caret line="16" column="43" lean-forward="false" selection-start-line="16" selection-start-column="43" selection-end-line="16" selection-end-column="43" />
               <folding />
             </state>
           </provider>
@@ -95,10 +96,10 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/Network.scala" />
         <option value="$PROJECT_DIR$/src/SetLoader.scala" />
-        <option value="$PROJECT_DIR$/src/TestDriver.scala" />
         <option value="$PROJECT_DIR$/adder.txt" />
+        <option value="$PROJECT_DIR$/src/TestDriver.scala" />
+        <option value="$PROJECT_DIR$/src/Network.scala" />
         <option value="$PROJECT_DIR$/src/NeuralNet.scala" />
       </list>
     </option>
@@ -291,7 +292,7 @@
       <updated>1503694921845</updated>
       <workItem from="1503694925060" duration="8980000" />
       <workItem from="1503869582992" duration="3791000" />
-      <workItem from="1503944686763" duration="28970000" />
+      <workItem from="1503944686763" duration="32184000" />
     </task>
     <task id="LOCAL-00001" summary="Data set loader object and methods&#10;Activation function added">
       <created>1503947237619</created>
@@ -314,11 +315,18 @@
       <option name="project" value="LOCAL" />
       <updated>1504066800423</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="updateWeights method complete">
+      <created>1504117408777</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1504117408777</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="41741000" />
+    <option name="totallyTimeSpent" value="44955000" />
   </component>
   <component name="TodoView" selected-index="4">
     <todo-panel id="selected-file">
@@ -372,11 +380,12 @@
     <MESSAGE value="Data set loader object and methods&#10;Activation function added" />
     <MESSAGE value="forward prop done&#10;created Neuron class within Network" />
     <MESSAGE value="back propigation done and tested&#10;started network training method&#10;todo: update weights method" />
-    <option name="LAST_COMMIT_MESSAGE" value="back propigation done and tested&#10;started network training method&#10;todo: update weights method" />
+    <MESSAGE value="updateWeights method complete" />
+    <option name="LAST_COMMIT_MESSAGE" value="updateWeights method complete" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="19" />
+      <option name="time" value="25" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -437,22 +446,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/TestDriver.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="525">
-          <caret line="25" column="13" lean-forward="true" selection-start-line="25" selection-start-column="13" selection-end-line="25" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/adder.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="9" column="33" lean-forward="false" selection-start-line="9" selection-start-column="33" selection-end-line="9" selection-end-column="33" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/seeds_dataset.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="189">
@@ -471,10 +464,26 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/adder.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="189">
+          <caret line="9" column="33" lean-forward="false" selection-start-line="9" selection-start-column="33" selection-end-line="9" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/TestDriver.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="336">
+          <caret line="16" column="43" lean-forward="false" selection-start-line="16" selection-start-column="43" selection-end-line="16" selection-end-column="43" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/Network.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="53" column="0" lean-forward="true" selection-start-line="53" selection-start-column="0" selection-end-line="53" selection-end-column="0" />
+        <state relative-caret-position="525">
+          <caret line="27" column="24" lean-forward="false" selection-start-line="27" selection-start-column="24" selection-end-line="27" selection-end-column="24" />
           <folding>
             <element signature="e#0#35#0" expanded="true" />
           </folding>
@@ -483,8 +492,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/NeuralNet.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="580">
-          <caret line="111" column="41" lean-forward="false" selection-start-line="111" selection-start-column="41" selection-end-line="111" selection-end-column="41" />
+        <state relative-caret-position="-2081">
+          <caret line="6" column="24" lean-forward="true" selection-start-line="6" selection-start-column="24" selection-end-line="6" selection-end-column="24" />
           <folding>
             <element signature="e#0#43#0" expanded="true" />
           </folding>

@@ -3,7 +3,7 @@ object TestDriver{
   def main(args: Array[String]): Unit = {
 
     var loader = SetLoader
-    val set :List[Array[Double]] = loader.loadSet("./seeds_dataset.txt")
+    val set :List[Array[Double]] = loader.loadSet("./adder.txt")
 
     /*
     for(index <- set.indices){
@@ -13,20 +13,8 @@ object TestDriver{
     }
     */
 
-    var net = new NeuralNet(7, 3, 3)
-    var output = net.forwardPropagate(set.head)
-    output.foreach(E => print(E.+(" ")))
-    println()
-    print(net._network)
-    println()
-    var expected :Array[Double] = Array(0,0,1)
-
-    net.backPropagate(expected)
-    print(net._network)
-    println()
-
-    net.updateWeights(set.head, 0.3)
-    print(net._network)
-    println()
+    val n_inputs = set.head.length-1
+    var net = new NeuralNet(n_inputs, 2, 2)
+    net.trainNetwork(set, 0.50, 50)
   }
 }
