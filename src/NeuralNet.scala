@@ -75,15 +75,42 @@ class NeuralNet (n_inputs :Int, n_hidden :Int, n_outputs :Int){
     }
   }
 
-  //TODO: Implement update-weights method
+  /**
+    * Update weights in the layers using previously calculated delta errors.
+    * @param record - The training record
+    * @param learnRate - The learning rate
+    */
+  def updateWeights(record :Array[Double], learnRate :Double): Unit ={
+
+    var layerInputs :Array[Double] = new Array[Double](_numInputs)
+    for(i <- 0 until _numInputs)
+      layerInputs(i) = record(i)
+
+    for(layerIdx <- _network._layers.indices){ // for each layer
+      for(neuronIdx <- _network._layers(layerIdx).indices){  // for each neuron in the layer
+
+        var thisNeuron =  _network._layers(layerIdx)(neuronIdx)
+
+        for(input <- layerInputs.indices) // adjust the weights using prior level inputs
+          thisNeuron._weights(input) += learnRate * thisNeuron._deltaError * layerInputs(input)
+        thisNeuron._weights(thisNeuron._weights.length-1) += learnRate * thisNeuron._deltaError
+      }
+
+      layerInputs = new Array[Double](_network._layers(layerIdx).length)
+      for(neuronIdx <- _network._layers(layerIdx).indices)
+        layerInputs(neuronIdx) = _network._layers(layerIdx)(neuronIdx)._output
+    }
+  }
 
   //TODO: Finish train network
   def trainNetwork(trainingSet :List[Array[Double]], learningRate :Double, numEpochs :Int): Unit ={
     for(epoch <- 0 until numEpochs){
       var error = 0.0d
       for(record <- trainingSet){
-        var outputs = forwardPropagate(record)
 
+        var outputs = forwardPropagate(record)
+        var expected = Array.fill[Int](0)(n_outputs)
+        expected(record.last.toInt) = 1
       }
     }
 
