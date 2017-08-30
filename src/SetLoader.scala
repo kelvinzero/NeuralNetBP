@@ -9,7 +9,7 @@ object SetLoader{
 
     for(line <- Source.fromFile(path).getLines()){
 
-      val splitline = line.split("\t+")
+      val splitline = line.split("\t+| +")
       var numericLine = new Array[Double](splitline.length)
 
       for(index <- splitline.indices)

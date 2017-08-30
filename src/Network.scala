@@ -12,13 +12,18 @@ object Network{
     val builder :StringBuilder = new StringBuilder
 
     for(layer <- _layers.indices){
+      builder
+        .append("Layer :[")
+        .append(layer+1)
+        .append("]\n")
       for(neuron <- _layers(layer).indices){
         builder
-          .append("[")
+            .append("Neuron: [")
+            .append(neuron+1)
+            .append("] ")
           .append(_layers(layer)(neuron).toString)
-          .append("]")
         if(neuron < _layers(layer).length-1)
-          builder.append(", ")
+          builder.append("\n")
       }
       builder.append("\n")
     }
@@ -26,10 +31,13 @@ object Network{
   }
 }
 
-class Neuron(_weights : Array[Double]){
+class Neuron(weights : Array[Double]){
 
   var _output             :Double = 0.0d
-  var _outputDerivative :Double = 0.0d
+  var _transferDerivative :Double = 0.0d
+  var _deltaError         :Double = 0.0d
+  var _weights            :Array[Double] = weights
+
 
   def activate(inputs: Array[Double]): Double = {
     var activation = _weights.last
@@ -41,16 +49,25 @@ class Neuron(_weights : Array[Double]){
 
   private def transfer(activation :Double): Unit = {
     _output           = 1.0 / (1.0 + Math.exp(-activation))
-    _outputDerivative = _output * (1 - _output)
+    _transferDerivative = _output * (1 - _output)
   }
 
   override def toString: String = {
     val builder :StringBuilder = new StringBuilder
+
+    builder.append("Delta error: [")
+    builder.append(_deltaError)
+    builder.append("] Output: [")
+    builder.append(_output)
+    builder.append("]")
+    builder.append(" 'Weights' {")
+
     for(idx <- _weights.indices) {
       builder.append(_weights(idx))
       if(idx < _weights.length-1)
         builder.append(", ")
     }
+    builder.append("}")
     builder.toString()
   }
 }
